@@ -12,6 +12,10 @@ export class Provider extends Component {
     ]
   };
 
+  fetchPhotos = () => {
+    fetch()
+  }
+
   render() {
     return (
       <GalleryContext.Provider value={this.state.photos}>
@@ -21,5 +25,4 @@ export class Provider extends Component {
   }
 }
 
-// export const Provider = GalleryContext.Provider;
 export const Consumer = GalleryContext.Consumer;
