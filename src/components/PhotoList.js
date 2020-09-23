@@ -1,39 +1,30 @@
-import React from 'react';
-import { Consumer } from './Context';
+import React, { Component } from 'react';
 import NotFound from './NotFound';
 import Photo from './Photo';
 
-const PhotoList = ({match}) => (
-  
+class PhotoList extends Component {
 
-  <Consumer>
-    {context => {
+  render() {
+    let photoList;
 
-      let photoList;
-      console.log(match);
+    if (this.props.loading) {
+      photoList = <p>Loading....</p>
+    } else if (this.props.photos.length > 0) {
+      photoList = this.props.photos.map(photo => <Photo url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`} key={photo.id}/>);
+    } else {
+      photoList = <NotFound />;
+    }
 
-      if (match.params.tag) {
-        context.actions.fetchPhotos(match.params.tag);
-      } else {
-        context.actions.fetchPhotos();
-      }
-
-     if (context.photos.length > 0) {
-        photoList = context.photos.map(photo => <Photo url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`} key={photo.id}/>);
-      } else {
-        photoList = <NotFound />;
-      }
-
-      return (
-        <div className="photo-container">
-          <h2>Results</h2>
-          <ul>
-            {photoList}
-          </ul>
-        </div>
-      );
-    }}
-  </Consumer>
-);
+    console.log('hello');
+    return (
+      <div className="photo-container">
+        <h2>Results</h2>
+        <ul>
+          {photoList}
+        </ul>
+      </div>
+    );
+  }
+}
 
 export default PhotoList;
