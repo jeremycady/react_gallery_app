@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 class SearchForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
+    this.props.changeLoading();
     this.props.history.push(this.query.value);
     e.currentTarget.reset();
   }
