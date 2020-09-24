@@ -7,9 +7,6 @@ class PhotoList extends Component {
   render() {
     let photoList;
 
-    console.log(this.props.query);
-    console.log('hello');
-
     if (this.props.query !== this.props.tag) {
       this.props.fetchPhotos(this.props.tag);
     } else if (this.props.photos.length > 0) {

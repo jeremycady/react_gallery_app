@@ -7,6 +7,7 @@ import {
 import SearchForm from './components/SearchForm';
 import MainNav from './components/MainNav';
 import PhotoList from './components/PhotoList';
+import noPage from './components/NoPage';
 import apiKey from './config';
 
 class App extends Component {
@@ -48,8 +49,7 @@ class App extends Component {
                 loading={this.state.loading}
               />
             }/>
-            <Route exact path="/:tag" render={({match}) => {
-              // this.handleFetchPhotos(match.params.query)
+            <Route path="/:tag" render={({match}) => {
               return (
                 <PhotoList 
                   photos={this.state.photos} 
@@ -59,6 +59,7 @@ class App extends Component {
                 />
               );
             }}/>
+            <Route component={noPage}/>
           </Switch>
         </div>
       </BrowserRouter>
