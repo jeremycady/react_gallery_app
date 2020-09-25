@@ -1,3 +1,12 @@
+# React Gallery App
+The React Gallery App uses the Flickr API, React, and React Router to fetch photos and display them to the user.
+
+Upon load, the application fetches "sunset" photos and also displays three default photo links. When clicked, the user is routed to the appropriate url and those photos are fetched from Flickr. 
+
+The user may also use the search form to search for a term. The application will again route the user to the appropriate url and pull those photos from Flickr and display them. 
+
+The default photo links can be changed in state.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 class SearchForm extends Component {
+
+  // takes query value and then routes user to url path of that value to fetch photos using that query value
   handleSubmit = e => {
     e.preventDefault();
     this.props.changeLoading();

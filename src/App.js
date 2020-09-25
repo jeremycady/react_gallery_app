@@ -7,18 +7,26 @@ import {
 import SearchForm from './components/SearchForm';
 import MainNav from './components/MainNav';
 import PhotoList from './components/PhotoList';
-import noPage from './components/NoPage';
-import apiKey from './config';
+import NoPage from './components/NoPage';
 import Loading from './components/Loading';
+
+//add your Flickr API key to configCopy.js and rename the file to config.js
+import apiKey from './config';
 
 class App extends Component {
 
   state = {
     photos: [],
+    defaultLinks: [
+      'cats', 
+      'dogs', 
+      'computers'
+    ],
     current: 'sunsets',
     loading: true
   };
 
+  // fetches photos matching the query and updates the photo array, current query, and the loading states
   handleFetchPhotos = (query) => {
 
     fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${apiKey}&tags=${query}&safe_search=&per_page=24&format=json&nojsoncallback=1`)
@@ -35,10 +43,12 @@ class App extends Component {
       });
   };
 
+  // changes the loading state to true
   handleChangeLoading = () => {
     this.setState({ loading: true})
   };
 
+  // checks if the loading state is true or if the path changes, forcing a fetch
   handleLoading = (path) => {
     if (this.state.loading || this.state.current !== path) {
       return <Loading 
@@ -50,6 +60,7 @@ class App extends Component {
     }
   };
 
+  // initializes the photo array on load
   componentDidMount() {
     this.handleFetchPhotos(this.state.query);
   };
@@ -59,14 +70,14 @@ class App extends Component {
       <BrowserRouter>
         <div className="container">
           <SearchForm changeLoading={this.handleChangeLoading}/>
-          <MainNav changeLoading={this.handleChangeLoading}/>
+          <MainNav changeLoading={this.handleChangeLoading} links={this.state.defaultLinks}/>
           <Switch>
             <Route exact path="/" render={() => this.handleLoading("sunsets")}/>
-            <Route exact path="/cats" render={() => this.handleLoading("cats")}/>
-            <Route exact path="/dogs" render={() => this.handleLoading("dogs")}/>
-            <Route exact path="/computers" render={() => this.handleLoading("computers")}/>
+            {this.state.defaultLinks.map(link => {
+              return <Route exact path={`/${link}`} render={() => this.handleLoading(link)}/>
+            })}
             <Route path="/search/:tag" render={({match}) => this.handleLoading(match.params.tag)}/>
-            <Route component={noPage}/>
+            <Route component={NoPage}/>
           </Switch>
         </div>
       </BrowserRouter>
