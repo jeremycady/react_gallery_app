@@ -74,7 +74,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => this.handleLoading("sunsets")}/>
             {this.state.defaultLinks.map(link => {
-              return <Route exact path={`/${link}`} render={() => this.handleLoading(link)}/>
+              return <Route exact path={`/${link}`} render={() => this.handleLoading(link)} key={link}/>
             })}
             <Route path="/search/:tag" render={({match}) => this.handleLoading(match.params.tag)}/>
             <Route component={NoPage}/>
