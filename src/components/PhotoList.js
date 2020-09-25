@@ -7,7 +7,13 @@ const PhotoList = (props) => {
   let photoList;
 
   if (props.photos.length > 0) {
-    photoList = props.photos.map(photo => <Photo url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`} key={photo.id}/>);
+    photoList = props.photos.map(photo => {
+      if (photo.farm === 0) {
+        return <Photo url={`https://farm66.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`} key={photo.id}/>
+      } else {
+        return <Photo url={`https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}.jpg`} key={photo.id}/>
+      }
+    });
   } else {
     photoList = <NotFound />;
   }

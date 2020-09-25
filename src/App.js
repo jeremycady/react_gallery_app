@@ -15,6 +15,7 @@ class App extends Component {
 
   state = {
     photos: [],
+    current: 'sunsets',
     loading: true
   };
 
@@ -25,6 +26,7 @@ class App extends Component {
       .then(responseData => {
         this.setState({ 
           photos: responseData.photos.photo,
+          current: query,
           loading: false
         });
       })
@@ -33,8 +35,19 @@ class App extends Component {
       });
   };
 
-  handleLoading = () => {
+  handleChangeLoading = () => {
     this.setState({ loading: true})
+  };
+
+  handleLoading = (path) => {
+    if (this.state.loading || this.state.current !== path) {
+      return <Loading 
+        tag={path}
+        fetchPhotos={this.handleFetchPhotos}
+      />;
+    } else {
+      return <PhotoList photos={this.state.photos} />
+    }
   };
 
   componentDidMount() {
@@ -45,34 +58,14 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="container">
-          <SearchForm changeLoading={this.handleLoading}/>
-          <MainNav changeLoading={this.handleLoading}/>
+          <SearchForm changeLoading={this.handleChangeLoading}/>
+          <MainNav changeLoading={this.handleChangeLoading}/>
           <Switch>
-            <Route exact path="/" render={() => {
-              if (this.state.loading) {
-                return <Loading 
-                  tag={"sunsets"}
-                  fetchPhotos={this.handleFetchPhotos}
-                />;
-              } else {
-                return <PhotoList photos={this.state.photos} />
-              }
-            }}/>
-            <Route path="/:tag" render={({match}) => {
-              console.log('hello');
-              if (this.state.loading) {
-                return <Loading 
-                  tag={match.params.tag}
-                  fetchPhotos={this.handleFetchPhotos}
-                />;
-              } else {
-                return (
-                  <PhotoList 
-                    photos={this.state.photos} 
-                  />
-                );
-              }
-            }}/>
+            <Route exact path="/" render={() => this.handleLoading("sunsets")}/>
+            <Route exact path="/cats" render={() => this.handleLoading("cats")}/>
+            <Route exact path="/dogs" render={() => this.handleLoading("dogs")}/>
+            <Route exact path="/computers" render={() => this.handleLoading("computers")}/>
+            <Route path="/search/:tag" render={({match}) => this.handleLoading(match.params.tag)}/>
             <Route component={noPage}/>
           </Switch>
         </div>
